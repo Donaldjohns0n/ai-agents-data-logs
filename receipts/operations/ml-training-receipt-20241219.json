@@ -1,0 +1,78 @@
+{
+  "receipt": {
+    "id": "tx-20241219-103045-001",
+    "type": "operation",
+    "timestamp": "2024-12-19T10:30:45.123Z",
+    "version": "1.0"
+  },
+  "operation": {
+    "id": "op-ml-training-20241219-001",
+    "type": "ml-model-training",
+    "name": "Customer Sentiment Analysis Model Training",
+    "status": "completed",
+    "startTime": "2024-12-19T10:25:00.000Z",
+    "endTime": "2024-12-19T10:30:45.123Z",
+    "duration": "5m45.123s"
+  },
+  "agent": {
+    "id": "agent-ml-001",
+    "name": "ML Training Agent",
+    "version": "2.1.0",
+    "instance": "ml-agent-001-pod-abc123",
+    "responsible_user": "system-orchestrator"
+  },
+  "resources": {
+    "consumed": {
+      "cpu_hours": 0.38,
+      "memory_gb_hours": 1.53,
+      "gpu_hours": 0.095,
+      "storage_gb": 2.5
+    },
+    "cost": {
+      "total_usd": 1.47,
+      "breakdown": {
+        "compute": 0.95,
+        "storage": 0.12,
+        "gpu": 0.40
+      }
+    }
+  },
+  "data": {
+    "inputs": [
+      {
+        "dataset_id": "sentiment-training-v1.2",
+        "location": "s3://ai-data/datasets/sentiment/training/v1.2/",
+        "size_mb": 450.2,
+        "records": 125000,
+        "checksum": "sha256:a1b2c3d4..."
+      }
+    ],
+    "outputs": [
+      {
+        "model_id": "sentiment-model-v2.3",
+        "location": "s3://ai-models/sentiment/v2.3/model.pt",
+        "size_mb": 235.7,
+        "accuracy": 0.892,
+        "checksum": "sha256:e5f6g7h8..."
+      }
+    ]
+  },
+  "compliance": {
+    "data_classification": "restricted",
+    "retention_policy": "2y",
+    "gdpr_compliant": true,
+    "audit_required": true
+  },
+  "signature": {
+    "algorithm": "RSA-SHA256",
+    "value": "MEQCIBc7...",
+    "signed_by": "agent-ml-001",
+    "signed_at": "2024-12-19T10:30:45.123Z"
+  },
+  "metadata": {
+    "correlation_id": "corr-20241219-103045-001",
+    "trace_id": "trace-ml-training-001",
+    "parent_operation": null,
+    "child_operations": []
+  }
+}

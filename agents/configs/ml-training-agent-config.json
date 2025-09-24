@@ -1,0 +1,98 @@
+{
+  "agent_id": "agent-ml-001",
+  "name": "ML Training Agent",
+  "version": "2.1.0",
+  "environment": "production",
+  "deployment": {
+    "namespace": "ai-agents",
+    "cluster": "prod-cluster-east",
+    "node": "ml-node-003"
+  },
+  "configuration": {
+    "framework": "pytorch",
+    "cuda_version": "11.8",
+    "max_concurrent_jobs": 3,
+    "timeout_seconds": 3600,
+    "retry_policy": {
+      "max_retries": 3,
+      "backoff_multiplier": 2
+    }
+  },
+  "resources": {
+    "limits": {
+      "cpu": "4",
+      "memory": "8Gi",
+      "gpu": "1x-nvidia-v100",
+      "storage": "50Gi"
+    },
+    "requests": {
+      "cpu": "2",
+      "memory": "4Gi",
+      "gpu": "1x-nvidia-v100",
+      "storage": "20Gi"
+    }
+  },
+  "networking": {
+    "service_port": 8080,
+    "health_check_path": "/health",
+    "metrics_path": "/metrics",
+    "internal_dns": "ml-agent-001.ai-agents.svc.cluster.local"
+  },
+  "security": {
+    "service_account": "ml-agent-sa",
+    "rbac_enabled": true,
+    "tls_enabled": true,
+    "certificate_path": "/etc/certs",
+    "encryption": "AES-256-GCM"
+  },
+  "monitoring": {
+    "health_check": {
+      "enabled": true,
+      "interval": "30s",
+      "timeout": "10s",
+      "failure_threshold": 3
+    },
+    "metrics": {
+      "enabled": true,
+      "prometheus_port": 9090,
+      "custom_metrics": [
+        "model_training_time",
+        "model_accuracy",
+        "gpu_utilization",
+        "training_loss"
+      ]
+    },
+    "logging": {
+      "level": "INFO",
+      "format": "json",
+      "outputs": ["stdout", "file"],
+      "file_path": "/var/log/ml-agent.log"
+    }
+  },
+  "data_access": {
+    "input_sources": [
+      "s3://ai-data/training-datasets/",
+      "s3://ai-data/validation-datasets/"
+    ],
+    "output_destinations": [
+      "s3://ai-models/trained-models/",
+      "mlflow://model-registry/"
+    ],
+    "temporary_storage": "/tmp/ml-workspace"
+  },
+  "compliance": {
+    "data_classification": "restricted",
+    "retention_policy": "2y",
+    "audit_level": "detailed",
+    "gdpr_compliant": true,
+    "sox_requirements": false,
+    "hipaa_requirements": false
+  },
+  "lifecycle": {
+    "created_at": "2024-12-01T00:00:00.000Z",
+    "deployed_at": "2024-12-19T09:15:00.000Z",
+    "last_updated": "2024-12-19T09:15:00.000Z",
+    "restart_count": 0,
+    "uptime": "1d2h37m"
+  }
+}

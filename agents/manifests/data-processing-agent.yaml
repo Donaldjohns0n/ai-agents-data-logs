@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Agent
+metadata:
+  name: data-processing-agent
+  namespace: ai-agents
+  labels:
+    environment: production
+    type: data-processor
+    version: "1.2.0"
+  annotations:
+    created-by: orchestrator
+    managed: "true"
+spec:
+  agent:
+    id: "agent-dp-001"
+    name: "Data Processing Agent"
+    type: "data-processor"
+    version: "1.2.0"
+  capabilities:
+    - data-transformation
+    - batch-processing
+    - real-time-streaming
+  resources:
+    cpu: "2"
+    memory: "4Gi"
+    storage: "10Gi"
+  configuration:
+    maxConcurrentTasks: 5
+    timeoutSeconds: 300
+    retryPolicy:
+      maxRetries: 3
+      backoffMultiplier: 2
+  monitoring:
+    healthCheck:
+      enabled: true
+      interval: 30s
+      endpoint: "/health"
+    metrics:
+      enabled: true
+      port: 9090
+  compliance:
+    dataRetention: "90d"
+    encryptionRequired: true
+    auditLevel: "detailed"
+  provenance:
+    trackInputSources: true
+    trackTransformations: true
+    trackOutputDestinations: true

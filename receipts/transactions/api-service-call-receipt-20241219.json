@@ -1,0 +1,75 @@
+{
+  "receipt": {
+    "id": "tx-20241219-104512-002",
+    "type": "transaction",
+    "timestamp": "2024-12-19T10:45:12.456Z",
+    "version": "1.0"
+  },
+  "transaction": {
+    "id": "txn-api-call-20241219-002",
+    "type": "api-service-call",
+    "service": "external-data-provider",
+    "endpoint": "/api/v1/market-data",
+    "method": "GET",
+    "status": "success",
+    "response_code": 200,
+    "timestamp": "2024-12-19T10:45:12.456Z",
+    "response_time_ms": 245
+  },
+  "agent": {
+    "id": "agent-data-001",
+    "name": "Data Ingestion Agent",
+    "version": "1.8.3",
+    "instance": "data-agent-001-pod-xyz789",
+    "responsible_user": "data-pipeline-scheduler"
+  },
+  "billing": {
+    "provider": "external-data-provider",
+    "service_tier": "premium",
+    "usage_units": 1,
+    "unit_type": "api-call",
+    "cost_per_unit_usd": 0.05,
+    "total_cost_usd": 0.05,
+    "billing_account": "acc-12345-ai-agents"
+  },
+  "data": {
+    "request": {
+      "parameters": {
+        "symbols": ["AAPL", "GOOGL", "MSFT"],
+        "fields": ["price", "volume", "change"],
+        "time_range": "1d"
+      },
+      "size_kb": 0.2
+    },
+    "response": {
+      "records": 3,
+      "size_kb": 1.8,
+      "format": "json",
+      "checksum": "sha256:i9j0k1l2..."
+    }
+  },
+  "compliance": {
+    "data_classification": "public",
+    "terms_of_service": "accepted",
+    "rate_limit_compliant": true,
+    "data_usage_agreement": "commercial-license-v2.1"
+  },
+  "provenance": {
+    "source": "external-data-provider",
+    "purpose": "market-analysis-model-training",
+    "downstream_usage": ["model-training", "backtesting"],
+    "data_lineage_id": "lineage-market-data-001"
+  },
+  "signature": {
+    "algorithm": "ECDSA-SHA256",
+    "value": "MEUC...",
+    "signed_by": "agent-data-001",
+    "signed_at": "2024-12-19T10:45:12.456Z"
+  },
+  "metadata": {
+    "correlation_id": "corr-20241219-104512-002",
+    "trace_id": "trace-data-ingestion-002",
+    "request_id": "req-api-call-xyz789",
+    "session_id": "sess-data-pipeline-20241219"
+  }
+}

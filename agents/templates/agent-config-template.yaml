@@ -1,0 +1,66 @@
+# Agent Configuration Template
+
+agent:
+  id: "${AGENT_ID}"
+  name: "${AGENT_NAME}"
+  type: "${AGENT_TYPE}"
+  version: "${AGENT_VERSION}"
+  environment: "${ENVIRONMENT}"
+
+# Resource allocation
+resources:
+  cpu: "${CPU_LIMIT:-1}"
+  memory: "${MEMORY_LIMIT:-2Gi}"
+  storage: "${STORAGE_LIMIT:-5Gi}"
+  gpu: "${GPU_LIMIT:-0}"
+
+# Networking configuration
+networking:
+  port: "${AGENT_PORT:-8080}"
+  healthCheckPath: "${HEALTH_CHECK_PATH:-/health}"
+  metricsPath: "${METRICS_PATH:-/metrics}"
+
+# Security configuration
+security:
+  authentication:
+    enabled: "${AUTH_ENABLED:-true}"
+    method: "${AUTH_METHOD:-oauth2}"
+  encryption:
+    enabled: "${ENCRYPTION_ENABLED:-true}"
+    algorithm: "${ENCRYPTION_ALGORITHM:-AES-256}"
+  certificates:
+    tlsEnabled: "${TLS_ENABLED:-true}"
+    certPath: "${CERT_PATH:-/etc/certs}"
+
+# Logging configuration
+logging:
+  level: "${LOG_LEVEL:-INFO}"
+  format: "${LOG_FORMAT:-json}"
+  outputs:
+    - type: "file"
+      path: "/var/log/${AGENT_NAME}.log"
+    - type: "stdout"
+      structured: true
+
+# Monitoring configuration
+monitoring:
+  healthCheck:
+    enabled: true
+    interval: "${HEALTH_CHECK_INTERVAL:-30s}"
+    timeout: "${HEALTH_CHECK_TIMEOUT:-10s}"
+  metrics:
+    enabled: "${METRICS_ENABLED:-true}"
+    interval: "${METRICS_INTERVAL:-15s}"
+    
+# Compliance settings
+compliance:
+  dataRetention: "${DATA_RETENTION:-30d}"
+  auditLevel: "${AUDIT_LEVEL:-standard}"
+  dataClassification: "${DATA_CLASSIFICATION:-internal}"
+  
+# Provenance tracking
+provenance:
+  enabled: "${PROVENANCE_ENABLED:-true}"
+  trackInputs: "${TRACK_INPUTS:-true}"
+  trackOutputs: "${TRACK_OUTPUTS:-true}"
+  trackTransformations: "${TRACK_TRANSFORMATIONS:-true}"
