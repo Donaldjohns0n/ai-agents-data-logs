@@ -1,0 +1,223 @@
+apiVersion: v1
+kind: AgentCoordinationManifest
+metadata:
+  name: cross-platform-orchestration-manifest
+  namespace: ai-agents
+  labels:
+    environment: production
+    type: orchestration-coordinator
+    version: "1.0.0"
+    import-source: "cross-platform-discovery"
+  annotations:
+    created-by: "automated-import-system"
+    managed: "true"
+    last-sync: "2024-09-24T20:00:00.000Z"
+    source-repositories: "11"
+    
+spec:
+  orchestration:
+    coordinator_id: "orchestration-controller-v2.1"
+    coordination_model: "event-driven-with-fallback"
+    agent_registry:
+      total_agents: 15
+      active_agents: 12
+      coordination_patterns: ["sequential", "parallel", "event-driven"]
+      
+  agent_ecosystem:
+    discovery_agents:
+      - id: "discovery-agent-001"
+        name: "Cross-Platform Discovery Agent"
+        platforms: ["github", "google_drive", "laptop"]
+        capabilities: ["file-scanning", "metadata-extraction", "duplicate-detection"]
+        status: "active"
+        last_activity: "2024-09-24T19:55:00.000Z"
+        
+    processing_agents:
+      - id: "copilot-agent-github-001"
+        name: "GitHub Copilot Agent"
+        repository_access: ["Donaldjohns0n/*"]
+        capabilities: ["code-analysis", "documentation", "workflow-orchestration"]
+        status: "active"
+        session_count: 23
+        
+      - id: "validation-agent-001"
+        name: "Data Validation Agent" 
+        validation_types: ["format", "integrity", "schema"]
+        capabilities: ["json-validation", "yaml-validation", "hash-verification"]
+        status: "active"
+        validation_success_rate: 0.98
+        
+      - id: "deduplication-agent-002"
+        name: "Data Deduplication Agent"
+        conflict_resolution: ["timestamp-priority", "merge-strategy", "manual-review"]
+        capabilities: ["duplicate-detection", "conflict-resolution", "data-merging"]
+        status: "active"
+        conflicts_resolved: 156
+        
+    import_agents:
+      - id: "import-orchestrator-003"
+        name: "Import Orchestration Agent"
+        target_repositories: ["ai-agents-data-logs"]
+        capabilities: ["file-import", "directory-creation", "receipt-generation"]
+        status: "active"
+        import_success_rate: 1.0
+        
+      - id: "receipt-generator"
+        name: "Receipt Generation Agent"
+        signature_algorithms: ["RSA-SHA256", "ECDSA-SHA256"]
+        capabilities: ["receipt-creation", "digital-signing", "timestamp-verification"]
+        status: "active"
+        receipts_generated: 847
+        
+  coordination_workflows:
+    cross_platform_discovery:
+      workflow_id: "wf-cross-platform-discovery"
+      trigger: "manual-initiation"
+      pattern: "fan-out-gather"
+      steps:
+        - name: "platform-scanning"
+          agents: ["discovery-agent-001"]
+          parallel_execution: true
+          timeout: "10m"
+          
+        - name: "data-validation" 
+          agents: ["validation-agent-001"]
+          depends_on: ["platform-scanning"]
+          timeout: "5m"
+          
+        - name: "conflict-resolution"
+          agents: ["deduplication-agent-002"]
+          depends_on: ["data-validation"]
+          condition: "conflicts_detected"
+          timeout: "3m"
+          
+        - name: "canonical-import"
+          agents: ["import-orchestrator-003", "receipt-generator"]
+          depends_on: ["conflict-resolution"]
+          parallel_execution: true
+          timeout: "2m"
+          
+    repository_enhancement:
+      workflow_id: "wf-repository-enhancement"
+      trigger: "import-completion"
+      pattern: "sequential"
+      steps:
+        - name: "structure-validation"
+          agents: ["structure-validator"]
+          timeout: "1m"
+          
+        - name: "documentation-update"
+          agents: ["copilot-agent-github-001"]
+          depends_on: ["structure-validation"]
+          timeout: "5m"
+          
+        - name: "compliance-verification"
+          agents: ["compliance-checker"]
+          depends_on: ["documentation-update"]
+          timeout: "2m"
+
+  communication_protocols:
+    message_format: "json-rpc-2.0"
+    transport: "https"
+    authentication: "oauth2-jwt"
+    encryption: "tls-1.3"
+    timeout_default: "30s"
+    retry_policy:
+      max_retries: 3
+      backoff_multiplier: 2
+      max_backoff: "60s"
+      
+  monitoring:
+    health_checks:
+      enabled: true
+      interval: "30s"
+      endpoint: "/health"
+      timeout: "5s"
+      
+    metrics:
+      enabled: true
+      collection_interval: "15s"
+      metrics_port: 9090
+      custom_metrics:
+        - "coordination_events_total"
+        - "agent_response_time"  
+        - "workflow_success_rate"
+        - "communication_failures"
+        
+    logging:
+      level: "INFO"
+      format: "json"
+      outputs: ["stdout", "file", "elasticsearch"]
+      correlation_tracking: true
+      
+  security:
+    authentication:
+      method: "oauth2"
+      token_expiry: "1h" 
+      refresh_enabled: true
+      
+    authorization:
+      model: "rbac"
+      permissions: ["read", "write", "execute", "admin"]
+      role_hierarchy: ["viewer", "operator", "admin", "super-admin"]
+      
+    encryption:
+      at_rest: "aes-256"
+      in_transit: "tls-1.3"
+      key_rotation: "quarterly"
+      
+  compliance:
+    data_governance:
+      classification_required: true
+      retention_enforced: true
+      audit_trail_complete: true
+      
+    regulatory:
+      gdpr_compliant: true
+      sox_applicable: false
+      hipaa_applicable: false
+      
+    policies:
+      privacy_by_design: true
+      data_minimization: true
+      consent_management: true
+      
+  resources:
+    limits:
+      cpu: "4"
+      memory: "8Gi"
+      storage: "50Gi"
+      network_bandwidth: "1Gbps"
+      
+    requests:
+      cpu: "2"
+      memory: "4Gi"
+      storage: "20Gi"
+      
+  scaling:
+    horizontal:
+      enabled: true
+      min_replicas: 2
+      max_replicas: 10
+      target_cpu_utilization: 70
+      
+    vertical:
+      enabled: true
+      max_cpu: "8"
+      max_memory: "16Gi"
+      
+  lifecycle:
+    created_at: "2024-09-24T20:00:00.000Z"
+    imported_from: "cross-platform-discovery"
+    last_updated: "2024-09-24T20:30:00.000Z"
+    sync_frequency: "daily"
+    retention_period: "2y"
+    
+status:
+  phase: "active"
+  ready: true
+  agents_healthy: 12
+  workflows_running: 2
+  last_coordination_event: "2024-09-24T20:25:00.000Z"
+  coordination_success_rate: 0.94
+  average_response_time: "120ms"
