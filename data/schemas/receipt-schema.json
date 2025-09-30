@@ -122,11 +122,20 @@
       "required": ["correlation_id"],
       "properties": {
         "correlation_id": {"type": "string"},
-        "trace_id": {"type": "string"},
-        "parent_operation": {"type": ["string", "null"]},
+        "trace_id": {
+          "type": "string",
+          "pattern": "^trace-[a-z0-9-]+$"
+        },
+        "parent_operation": {
+          "type": ["string", "null"],
+          "pattern": "^op-[a-z0-9-]+$"
+        },
         "child_operations": {
           "type": "array",
-          "items": {"type": "string"}
+          "items": {
+            "type": "string",
+            "pattern": "^op-[a-z0-9-]+$"
+          }
         }
       }
     }
