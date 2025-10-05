@@ -1,0 +1,72 @@
+{
+  "agentRegistry": {
+    "version": "1.0",
+    "lastUpdated": "2024-12-19T10:30:00Z",
+    "agents": [
+      {
+        "id": "agent-ml-001",
+        "name": "ML Training Agent",
+        "status": "active",
+        "type": "machine-learning",
+        "version": "2.1.0",
+        "deployedAt": "2024-12-19T09:15:00Z",
+        "configuration": {
+          "framework": "pytorch",
+          "modelType": "neural-network",
+          "batchSize": 32,
+          "learningRate": 0.001
+        },
+        "resources": {
+          "cpu": "4",
+          "memory": "8Gi",
+          "gpu": "1x-nvidia-v100"
+        },
+        "endpoints": {
+          "training": "https://ml-agent-001.internal/train",
+          "inference": "https://ml-agent-001.internal/predict",
+          "metrics": "https://ml-agent-001.internal/metrics"
+        },
+        "dependencies": ["data-processing-agent", "model-registry"],
+        "compliance": {
+          "dataClassification": "restricted",
+          "retentionPolicy": "2y",
+          "auditRequired": true
+        }
+      },
+      {
+        "id": "agent-nlp-002",
+        "name": "NLP Processing Agent",
+        "status": "active",
+        "type": "natural-language",
+        "version": "1.5.2",
+        "deployedAt": "2024-12-19T08:45:00Z",
+        "configuration": {
+          "model": "transformer-base",
+          "maxTokens": 2048,
+          "temperature": 0.7,
+          "languages": ["en", "es", "fr"]
+        },
+        "resources": {
+          "cpu": "2",
+          "memory": "4Gi"
+        },
+        "endpoints": {
+          "process": "https://nlp-agent-002.internal/process",
+          "analyze": "https://nlp-agent-002.internal/analyze",
+          "health": "https://nlp-agent-002.internal/health"
+        },
+        "compliance": {
+          "dataClassification": "public",
+          "retentionPolicy": "30d",
+          "auditRequired": false
+        }
+      }
+    ],
+    "orchestration": {
+      "coordinator": "orchestration-controller",
+      "loadBalancing": "round-robin",
+      "healthCheckInterval": 30,
+      "failoverEnabled": true
+    }
+  }
+}

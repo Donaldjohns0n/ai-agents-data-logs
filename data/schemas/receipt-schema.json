@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-agents.internal/schemas/receipt.json",
+  "title": "AI Agent Receipt Schema",
+  "description": "Schema for agent operation receipts and transaction records",
+  "type": "object",
+  "required": ["receipt", "agent", "signature", "metadata"],
+  "properties": {
+    "receipt": {
+      "type": "object",
+      "required": ["id", "type", "timestamp", "version"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^(tx|op|comp)-\\d{8}-\\d{6}-\\d{3}$",
+          "description": "Unique receipt identifier"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["operation", "transaction", "completion"],
+          "description": "Receipt type"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Receipt generation timestamp in ISO 8601 format"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+$",
+          "description": "Receipt format version"
+        }
+      }
+    },
+    "agent": {
+      "type": "object",
+      "required": ["id", "name", "version"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^agent-[a-z0-9-]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "instance": {"type": "string"},
+        "responsible_user": {"type": "string"}
+      }
+    },
+    "operation": {
+      "type": "object",
+      "properties": {
+        "id": {"type": "string"},
+        "type": {"type": "string"},
+        "name": {"type": "string"},
+        "status": {
+          "type": "string",
+          "enum": ["pending", "running", "completed", "failed", "cancelled"]
+        },
+        "startTime": {"type": "string", "format": "date-time"},
+        "endTime": {"type": "string", "format": "date-time"},
+        "duration": {"type": "string"}
+      }
+    },
+    "resources": {
+      "type": "object",
+      "properties": {
+        "consumed": {
+          "type": "object",
+          "properties": {
+            "cpu_hours": {"type": "number", "minimum": 0},
+            "memory_gb_hours": {"type": "number", "minimum": 0},
+            "gpu_hours": {"type": "number", "minimum": 0},
+            "storage_gb": {"type": "number", "minimum": 0}
+          }
+        },
+        "cost": {
+          "type": "object",
+          "properties": {
+            "total_usd": {"type": "number", "minimum": 0},
+            "breakdown": {
+              "type": "object",
+              "additionalProperties": {"type": "number", "minimum": 0}
+            }
+          }
+        }
+      }
+    },
+    "compliance": {
+      "type": "object",
+      "properties": {
+        "data_classification": {
+          "type": "string",
+          "enum": ["public", "internal", "restricted", "confidential"]
+        },
+        "retention_policy": {"type": "string"},
+        "gdpr_compliant": {"type": "boolean"},
+        "audit_required": {"type": "boolean"}
+      }
+    },
+    "signature": {
+      "type": "object",
+      "required": ["algorithm", "value", "signed_by", "signed_at"],
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "enum": ["RSA-SHA256", "ECDSA-SHA256", "EdDSA"]
+        },
+        "value": {"type": "string"},
+        "signed_by": {"type": "string"},
+        "signed_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["correlation_id"],
+      "properties": {
+        "correlation_id": {"type": "string"},
+        "trace_id": {
+          "type": "string",
+          "pattern": "^trace-[a-z0-9-]+$"
+        },
+        "parent_operation": {
+          "type": ["string", "null"],
+          "pattern": "^op-[a-z0-9-]+$"
+        },
+        "child_operations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^op-[a-z0-9-]+$"
+          }
+        }
+      }
+    }
+  }
+}

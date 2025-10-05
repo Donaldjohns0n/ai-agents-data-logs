@@ -1,0 +1,304 @@
+{
+  "provenance_record": {
+    "id": "prov-customer-onboarding-20241219-001",
+    "created_at": "2024-12-19T10:52:30.789Z",
+    "version": "1.0",
+    "type": "workflow-provenance"
+  },
+  "workflow": {
+    "id": "wf-customer-onboarding-001",
+    "name": "Customer Onboarding Workflow",
+    "version": "1.4.0",
+    "execution_id": "exec-20241219-105230-789"
+  },
+  "execution_chain": [
+    {
+      "step": 1,
+      "agent": {
+        "id": "agent-validation-001",
+        "name": "Document Validation Agent",
+        "version": "1.3.2"
+      },
+      "operation": "identity-verification",
+      "timestamp": "2024-12-19T10:30:00.000Z",
+      "duration": "3m15.234s",
+      "inputs": [
+        {
+          "type": "document",
+          "id": "doc-drivers-license-cust-56789",
+          "format": "image/jpeg",
+          "size_kb": 245.7,
+          "checksum": "sha256:a1b2c3d4e5f6..."
+        },
+        {
+          "type": "document",
+          "id": "doc-passport-cust-56789",
+          "format": "image/jpeg",
+          "size_kb": 189.3,
+          "checksum": "sha256:f6e5d4c3b2a1..."
+        }
+      ],
+      "outputs": [
+        {
+          "type": "validation-result",
+          "id": "validation-result-cust-56789",
+          "status": "verified",
+          "confidence": 0.97,
+          "details": {
+            "identity_match": true,
+            "document_authenticity": "verified",
+            "expiration_valid": true
+          }
+        }
+      ],
+      "decisions": [
+        {
+          "decision_point": "identity_verification",
+          "algorithm": "multi-factor-verification",
+          "parameters": {
+            "confidence_threshold": 0.90,
+            "document_types_required": 2
+          },
+          "result": "approved",
+          "reasoning": "High confidence identity match with valid documents"
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "agent": {
+        "id": "agent-risk-002",
+        "name": "Risk Assessment Agent",
+        "version": "2.0.1"
+      },
+      "operation": "fraud-detection-scoring",
+      "timestamp": "2024-12-19T10:33:15.234Z",
+      "duration": "8m45.567s",
+      "inputs": [
+        {
+          "type": "validation-result",
+          "id": "validation-result-cust-56789",
+          "source_step": 1
+        },
+        {
+          "type": "credit-report",
+          "id": "credit-report-cust-56789",
+          "provider": "credit-bureau-api",
+          "timestamp": "2024-12-19T10:33:20.000Z"
+        },
+        {
+          "type": "behavioral-data",
+          "id": "behavior-profile-cust-56789",
+          "features": ["device_fingerprint", "geolocation", "access_patterns"]
+        }
+      ],
+      "outputs": [
+        {
+          "type": "risk-assessment",
+          "id": "risk-assessment-cust-56789",
+          "overall_score": 0.12,
+          "risk_level": "low",
+          "factors": {
+            "credit_risk": 0.08,
+            "fraud_risk": 0.15,
+            "behavioral_risk": 0.10,
+            "identity_risk": 0.05
+          }
+        }
+      ],
+      "decisions": [
+        {
+          "decision_point": "risk_threshold",
+          "algorithm": "ensemble-risk-model",
+          "parameters": {
+            "max_acceptable_risk": 0.30,
+            "fraud_threshold": 0.25,
+            "credit_threshold": 0.20
+          },
+          "result": "approved",
+          "reasoning": "All risk factors below acceptable thresholds"
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "agent": {
+        "id": "agent-onboard-003",
+        "name": "Account Provisioning Agent",
+        "version": "1.8.0"
+      },
+      "operation": "account-creation",
+      "timestamp": "2024-12-19T10:42:00.801Z",
+      "duration": "10m29.988s",
+      "inputs": [
+        {
+          "type": "risk-assessment",
+          "id": "risk-assessment-cust-56789",
+          "source_step": 2
+        },
+        {
+          "type": "customer-preferences",
+          "id": "preferences-cust-56789",
+          "services_requested": ["checking", "savings", "mobile-app"]
+        }
+      ],
+      "outputs": [
+        {
+          "type": "account-package",
+          "id": "account-package-cust-56789",
+          "accounts_created": [
+            {
+              "type": "checking",
+              "number": "CHK-789012345",
+              "routing": "021000021"
+            },
+            {
+              "type": "savings",
+              "number": "SAV-789012346",
+              "routing": "021000021"
+            }
+          ],
+          "services_activated": ["mobile-app", "online-banking", "debit-card"]
+        }
+      ],
+      "decisions": [
+        {
+          "decision_point": "service_eligibility",
+          "algorithm": "service-eligibility-matrix",
+          "parameters": {
+            "risk_score": 0.12,
+            "identity_verified": true,
+            "requested_services": ["checking", "savings", "mobile-app"]
+          },
+          "result": "full_approval",
+          "reasoning": "Low risk customer eligible for all requested services"
+        }
+      ]
+    }
+  ],
+  "orchestration": {
+    "coordinator": {
+      "id": "orchestration-controller-v2.1",
+      "decision_algorithm": "rule-based-with-ml-fallback",
+      "execution_pattern": "sequential-with-validation-gates"
+    },
+    "coordination_decisions": [
+      {
+        "decision_point": "workflow_initiation",
+        "timestamp": "2024-12-19T10:30:00.000Z",
+        "criteria": "customer_onboarding_request",
+        "result": "proceed",
+        "next_step": "identity_verification"
+      },
+      {
+        "decision_point": "validation_gate_1",
+        "timestamp": "2024-12-19T10:33:15.234Z",
+        "criteria": "identity_verification_passed",
+        "result": "proceed",
+        "next_step": "risk_assessment"
+      },
+      {
+        "decision_point": "validation_gate_2",
+        "timestamp": "2024-12-19T10:42:00.801Z",
+        "criteria": "risk_assessment_passed",
+        "result": "proceed",
+        "next_step": "account_provisioning"
+      },
+      {
+        "decision_point": "workflow_completion",
+        "timestamp": "2024-12-19T10:52:30.789Z",
+        "criteria": "all_steps_completed_successfully",
+        "result": "complete",
+        "next_step": null
+      }
+    ]
+  },
+  "data_lineage": {
+    "input_data": [
+      {
+        "id": "customer-application-cust-56789",
+        "source": "customer-portal",
+        "timestamp": "2024-12-19T10:25:00.000Z",
+        "classification": "restricted"
+      }
+    ],
+    "intermediate_data": [
+      {
+        "id": "validation-result-cust-56789",
+        "created_by": "agent-validation-001",
+        "step": 1,
+        "classification": "restricted"
+      },
+      {
+        "id": "risk-assessment-cust-56789",
+        "created_by": "agent-risk-002",
+        "step": 2,
+        "classification": "restricted"
+      }
+    ],
+    "output_data": [
+      {
+        "id": "account-package-cust-56789",
+        "created_by": "agent-onboard-003",
+        "step": 3,
+        "classification": "confidential",
+        "retention_policy": "7y"
+      }
+    ],
+    "data_transformations": [
+      {
+        "from": "customer-application",
+        "to": "validation-inputs",
+        "transformation": "document-extraction",
+        "agent": "agent-validation-001"
+      },
+      {
+        "from": "validation-result",
+        "to": "risk-inputs",
+        "transformation": "feature-extraction",
+        "agent": "agent-risk-002"
+      },
+      {
+        "from": "risk-assessment",
+        "to": "provisioning-parameters",
+        "transformation": "service-mapping",
+        "agent": "agent-onboard-003"
+      }
+    ]
+  },
+  "compliance": {
+    "regulatory_requirements": {
+      "kyc_compliance": {
+        "standard": "BSA/AML",
+        "verified": true,
+        "verification_method": "document-validation-agent",
+        "timestamp": "2024-12-19T10:33:15.234Z"
+      },
+      "privacy_compliance": {
+        "standard": "GDPR",
+        "consent_obtained": true,
+        "data_minimization": true,
+        "retention_defined": true
+      }
+    },
+    "audit_trail": {
+      "complete": true,
+      "tamper_evident": true,
+      "digitally_signed": true,
+      "retention_period": "7y"
+    }
+  },
+  "metadata": {
+    "business_context": {
+      "customer_id": "cust-56789",
+      "business_unit": "customer-acquisition",
+      "cost_center": "digital-onboarding",
+      "regulatory_jurisdiction": "US"
+    },
+    "technical_context": {
+      "correlation_id": "corr-onboarding-cust-56789",
+      "trace_id": "trace-workflow-onboarding-001",
+      "session_id": "sess-portal-20241219-102500"
+    }
+  }
+}

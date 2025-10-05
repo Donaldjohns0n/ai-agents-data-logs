@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-agents.internal/schemas/agent-manifest.json",
+  "title": "AI Agent Manifest Schema",
+  "description": "Schema for AI agent configuration and deployment manifests",
+  "type": "object",
+  "required": ["apiVersion", "kind", "metadata", "spec"],
+  "properties": {
+    "apiVersion": {
+      "type": "string",
+      "enum": ["v1", "v1beta1", "v2"],
+      "description": "API version of the manifest"
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["Agent", "AgentGroup", "Workflow"],
+      "description": "Resource type"
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$",
+          "description": "Agent name"
+        },
+        "namespace": {
+          "type": "string",
+          "default": "default",
+          "description": "Deployment namespace"
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {"type": "string"}
+        },
+        "annotations": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^(?:[a-z0-9]([-a-z0-9]*[a-z0-9])?\\.)+[a-z]{2,}/[A-Za-z0-9_.-]+$"
+          },
+          "additionalProperties": {"type": "string"}
+        }
+      }
+    },
+    "spec": {
+      "type": "object",
+      "required": ["agent"],
+      "properties": {
+        "agent": {
+          "type": "object",
+          "required": ["id", "name", "type", "version"],
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^agent-[a-z0-9-]+$"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "type": {
+              "type": "string",
+              "enum": ["data-processor", "ml-trainer", "nlp-processor", "orchestrator", "monitor"]
+            },
+            "version": {
+              "type": "string",
+              "pattern": "^\\d+\\.\\d+\\.\\d+$"
+            }
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "resources": {
+          "type": "object",
+          "properties": {
+            "cpu": {"type": "string"},
+            "memory": {"type": "string"},
+            "storage": {"type": "string"},
+            "gpu": {"type": "string"}
+          }
+        },
+        "configuration": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "compliance": {
+          "type": "object",
+          "properties": {
+            "dataRetention": {"type": "string"},
+            "encryptionRequired": {"type": "boolean"},
+            "auditLevel": {
+              "type": "string",
+              "enum": ["none", "basic", "standard", "detailed", "comprehensive"]
+            }
+          }
+        }
+      }
+    }
+  }
+}

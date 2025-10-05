@@ -1,0 +1,148 @@
+{
+  "provenance_chain": {
+    "id": "lineage-sentiment-analysis-v2.3",
+    "created_at": "2024-12-19T10:52:30.789Z",
+    "version": "1.0",
+    "type": "ml-model-lineage"
+  },
+  "root_inputs": [
+    {
+      "id": "raw-customer-reviews-2024q4",
+      "type": "dataset",
+      "source": "customer-feedback-system",
+      "location": "s3://raw-data/customer-reviews/2024/q4/",
+      "created_at": "2024-12-01T00:00:00.000Z",
+      "size_gb": 2.1,
+      "records": 450000,
+      "schema_version": "reviews-v1.2"
+    }
+  ],
+  "transformation_chain": [
+    {
+      "step": 1,
+      "agent": "agent-data-001",
+      "operation": "data-cleaning",
+      "timestamp": "2024-12-15T08:00:00.000Z",
+      "input": "raw-customer-reviews-2024q4",
+      "output": "cleaned-reviews-2024q4-v1",
+      "transformations": [
+        "remove_pii",
+        "normalize_text",
+        "remove_duplicates",
+        "language_detection"
+      ],
+      "parameters": {
+        "language_filter": "english",
+        "min_text_length": 10,
+        "pii_categories": ["email", "phone", "ssn"]
+      },
+      "quality_metrics": {
+        "records_removed": 23000,
+        "duplicate_rate": 0.051,
+        "pii_detection_rate": 0.003
+      }
+    },
+    {
+      "step": 2,
+      "agent": "agent-nlp-002",
+      "operation": "text-preprocessing",
+      "timestamp": "2024-12-16T09:30:00.000Z",
+      "input": "cleaned-reviews-2024q4-v1",
+      "output": "preprocessed-reviews-2024q4-v1",
+      "transformations": [
+        "tokenization",
+        "stemming",
+        "stop_word_removal",
+        "sentiment_labeling"
+      ],
+      "parameters": {
+        "tokenizer": "bert-base-uncased",
+        "max_tokens": 512,
+        "sentiment_threshold": 0.5
+      },
+      "quality_metrics": {
+        "avg_tokens_per_review": 45.7,
+        "sentiment_distribution": {
+          "positive": 0.42,
+          "negative": 0.31,
+          "neutral": 0.27
+        }
+      }
+    },
+    {
+      "step": 3,
+      "agent": "agent-ml-001",
+      "operation": "model-training",
+      "timestamp": "2024-12-19T10:25:00.000Z",
+      "input": "preprocessed-reviews-2024q4-v1",
+      "output": "sentiment-model-v2.3",
+      "transformations": [
+        "train_test_split",
+        "feature_extraction",
+        "model_training",
+        "validation"
+      ],
+      "parameters": {
+        "model_architecture": "transformer-bert",
+        "train_ratio": 0.8,
+        "batch_size": 32,
+        "learning_rate": 0.001,
+        "epochs": 15
+      },
+      "quality_metrics": {
+        "training_accuracy": 0.892,
+        "validation_accuracy": 0.875,
+        "f1_score": 0.883,
+        "precision": 0.890,
+        "recall": 0.876
+      }
+    }
+  ],
+  "final_outputs": [
+    {
+      "id": "sentiment-model-v2.3",
+      "type": "ml-model",
+      "location": "s3://ai-models/sentiment/v2.3/",
+      "created_at": "2024-12-19T10:30:45.123Z",
+      "size_mb": 235.7,
+      "format": "pytorch",
+      "metrics": {
+        "accuracy": 0.892,
+        "inference_latency_ms": 45
+      }
+    }
+  ],
+  "agents_involved": [
+    {
+      "id": "agent-data-001",
+      "name": "Data Processing Agent",
+      "version": "1.5.2",
+      "contributions": ["data-cleaning", "pii-removal"]
+    },
+    {
+      "id": "agent-nlp-002",
+      "name": "NLP Processing Agent",
+      "version": "1.5.2",
+      "contributions": ["text-preprocessing", "sentiment-labeling"]
+    },
+    {
+      "id": "agent-ml-001",
+      "name": "ML Training Agent",
+      "version": "2.1.0",
+      "contributions": ["model-training", "validation"]
+    }
+  ],
+  "compliance": {
+    "data_retention": "2y",
+    "privacy_impact": "low",
+    "regulatory_requirements": ["GDPR", "CCPA"],
+    "audit_trail": "complete",
+    "lineage_verified": true
+  },
+  "metadata": {
+    "created_by": "orchestration-controller",
+    "business_purpose": "customer-sentiment-analysis",
+    "cost_center": "product-analytics",
+    "project": "customer-experience-insights"
+  }
+}
