@@ -77,6 +77,12 @@ ai-agents-data-logs/
 - **Authentication**: OAuth 2.0 and OpenID Connect integration
 - **Regulatory Compliance**: Built-in support for GDPR, SOX, HIPAA, PCI-DSS
 
+### 5. Interactive Execution Ledger
+- **Live Recording**: Agents append entries via `scripts/execution_ledger.py` while executing — one event per write, timestamps assigned by the ledger, never batch-fabricated
+- **Tamper Evidence**: SHA-256 hash chain over `logs/execution-ledger/ledger.jsonl` with end-to-end `verify`
+- **Constraint Tracking**: Sessions declare `must_not`/`must` constraints; every close carries an upheld/violated report
+- **Documentation**: See [docs/EXECUTION_LEDGER.md](docs/EXECUTION_LEDGER.md)
+
 ## 📋 Sample Configurations
 
 ### Agent Manifest Example

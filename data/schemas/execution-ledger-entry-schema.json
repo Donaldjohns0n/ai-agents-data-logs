@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-agents.internal/schemas/execution-ledger-entry.json",
+  "title": "Execution Ledger Entry Schema",
+  "description": "One append-only, hash-chained entry in logs/execution-ledger/ledger.jsonl. Entries are written one at a time by scripts/execution_ledger.py while an agent actually executes; timestamps are assigned by the ledger at append time and are never caller-supplied. Batch-fabricated or back-dated records are a policy violation (signal: agent-execution-negative-constraints).",
+  "type": "object",
+  "required": ["seq", "timestamp", "ledger_version", "entry_type", "session_id", "prev_hash", "entry_hash"],
+  "properties": {
+    "seq": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "1-based position in the ledger; contiguous by construction"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC append time, assigned by the ledger itself"
+    },
+    "ledger_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+$"
+    },
+    "entry_type": {
+      "type": "string",
+      "enum": ["session_open", "event", "session_close"]
+    },
+    "session_id": {
+      "type": "string",
+      "pattern": "^exec-\\d{8}-\\d{6}-[a-f0-9]{6}$"
+    },
+    "prev_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "entry_hash of the previous entry; 64 zeros for the genesis entry"
+    },
+    "entry_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 of the entry's canonical JSON with entry_hash removed"
+    },
+    "agent": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 }
+      },
+      "description": "Present on session_open entries"
+    },
+    "task": {
+      "type": "string",
+      "description": "Present on session_open entries"
+    },
+    "constraints": {
+      "type": "array",
+      "description": "Constraints declared at session open; 'must_not' entries are the negative constraints this ledger exists to keep visible",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "text"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[NP]\\d+$" },
+          "kind": { "type": "string", "enum": ["must_not", "must"] },
+          "text": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "event_type": {
+      "type": "string",
+      "description": "Present on event entries, e.g. step, tool_call, decision, error"
+    },
+    "message": {
+      "type": "string",
+      "description": "Present on event entries"
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "violates": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Declared constraint ids this event violated"
+    },
+    "outcome": {
+      "type": "string",
+      "enum": ["completed", "failed"],
+      "description": "Present on session_close entries"
+    },
+    "summary": {
+      "type": "string",
+      "description": "Present on session_close entries"
+    },
+    "constraint_report": {
+      "type": "array",
+      "description": "Present on session_close entries: per-constraint upheld/violated status with the seq numbers of violating entries",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "text", "status", "violating_entries"],
+        "properties": {
+          "id": { "type": "string" },
+          "kind": { "type": "string", "enum": ["must_not", "must"] },
+          "text": { "type": "string" },
+          "status": { "type": "string", "enum": ["upheld", "violated"] },
+          "violating_entries": {
+            "type": "array",
+            "items": { "type": "integer" }
+          }
+        }
+      }
+    },
+    "events_recorded": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Present on session_close entries"
+    }
+  }
+}
