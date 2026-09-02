@@ -6,50 +6,66 @@ Dedicated repository for AI agents data storage, audit logs, provenance tracking
 
 This repository implements a comprehensive data governance and orchestration framework for AI agents, providing:
 
-- **Professional Folder Structure**: Organized directories for data, logs, agents, provenance, receipts, compliance, and audit
+- **Flat, Relation-Mapped Layout**: Files live at the repository root; the former folder hierarchy is preserved as recorded relations in [manifest.json](manifest.json), not as boxes (see [failure-doctrine.md](failure-doctrine.md) — "butcher, don't box")
 - **Agent Tracking Manifests**: JSON/YAML configurations for agent deployment and monitoring
 - **Receipt System**: Timestamped transaction receipts with agent attribution
 - **Data Governance**: Comprehensive policies and compliance framework
 - **Cross-Agent Orchestration**: Multi-agent workflow coordination and management
 
-## 📁 Repository Structure
+## 📁 Repository Layout
 
-```
-ai-agents-data-logs/
-├── data/                   # Data storage and management
-│   ├── raw/               # Unprocessed data from agent operations
-│   ├── processed/         # Cleaned and transformed data
-│   ├── schemas/           # JSON schemas for data validation
-│   └── exports/           # Data exports for reporting
-├── logs/                  # Centralized logging system
-│   ├── access/           # User and system access logs
-│   ├── audit/            # Security and compliance audit logs
-│   ├── error/            # Error logs and exception tracking
-│   └── performance/      # Performance metrics and monitoring
-├── agents/               # Agent configuration and management
-│   ├── configs/          # Agent configuration files
-│   ├── manifests/        # Agent deployment manifests
-│   ├── templates/        # Reusable configuration templates
-│   └── runtime/          # Runtime state and execution context
-├── provenance/           # Data lineage and provenance tracking
-│   ├── chains/           # Operation chains and workflows
-│   ├── lineage/          # Data transformation lineage
-│   └── metadata/         # Provenance metadata and attribution
-├── receipts/             # Transaction receipts and confirmations
-│   ├── transactions/     # Financial and resource transactions
-│   ├── operations/       # Operation completion receipts
-│   └── completions/      # Workflow completion certificates
-├── compliance/           # Regulatory compliance documentation
-│   ├── policies/         # Compliance policies and procedures
-│   ├── reports/          # Regulatory reports and submissions
-│   └── certifications/   # Compliance certifications
-├── audit/               # Comprehensive audit trails
-│   ├── trails/          # Detailed audit trails
-│   ├── reviews/         # Audit reviews and findings
-│   └── assessments/     # Security and compliance assessments
-└── docs/                # Documentation
-    └── ORCHESTRATION_AND_COMPLIANCE.md  # Technical documentation
-```
+The repository is intentionally flat: **no directories** (only `.git`, ticketed in [tickets-flattening.md](tickets-flattening.md)). Every file's former path and the reason its folder was removed are recorded in [manifest.json](manifest.json) and [tickets-flattening.md](tickets-flattening.md). The file families below absorb what the old per-folder READMEs described.
+
+### Execution ledger (live agent activity)
+- `execution_ledger.py` — the interactive, append-only, hash-chained execution ledger CLI
+- `ledger.jsonl` — the ledger store (never edit by hand; only the tool appends)
+- `execution-ledger-entry-schema.json` — entry schema
+- `EXECUTION_LEDGER.md` — usage documentation
+- `test_execution_ledger.py` — test suite (`python3 -m unittest discover -s . -p "test_*.py"`)
+
+### Agent configuration and management
+Multi-agent orchestration, configuration as code, version-controlled agent definitions:
+- `agent-config-template.yaml` — reusable agent configuration template
+- `ml-training-agent-config.json` — agent configuration and environment settings
+- `agent-registry.json`, `data-processing-agent.yaml` — deployment and service manifests
+
+### Schemas and validation
+- `agent-manifest-schema.json`, `receipt-schema.json`, `execution-ledger-entry-schema.json`
+- `validate.sh` — repository validator (flat invariant, manifest coverage, hashes, ledger chain, parsing, tests)
+
+### Logs (structured JSON: ISO 8601 timestamps, agent identification, correlation IDs)
+- `ml-training-audit-20241219.jsonl` — security/compliance audit log
+- `copilot-master-quest-pr10-20240924.jsonl`, `copilot-session-20240924.jsonl` — imported historical sessions
+- `orchestration-events-20240924.jsonl` — cross-agent orchestration events
+
+### Session data
+- `comet-browser-session-20240920.json`, `copilot-session-ai-data-logs-20240924.json`
+- `cross-agent-coordination-manifest.yaml`
+
+### Receipts (unique IDs, timestamps, agent attribution, signatures, cross-references)
+- `api-service-call-receipt-20241219.json` — transaction receipt
+- `ml-training-receipt-20241219.json` — operation completion receipt
+- `workflow-completion-certificate-20241219.json` — workflow completion certificate
+- `cross-platform-sync-receipt.json`, `master-quest-pr10-receipt.json` — import/workflow receipts
+
+### Provenance (transformations, decision chains, input/output relationships, attribution)
+- `customer-onboarding-workflow-provenance.json` — operation chain / workflow provenance
+- `sentiment-model-v2.3-lineage.json` — data transformation lineage
+
+### Audit (activity tracking, compliance verification, forensic support)
+- `comprehensive-audit-trail-20241219.json`, `cross-agent-orchestration-audit-20240924.json` — audit trails
+- `agent-execution-negative-constraints-20260828.md` — audit review of the negative-constraints failure signal
+
+### Compliance (GDPR, SOX, HIPAA, internal governance)
+- `data-governance-policy.md` — policies and procedures
+- `integrity-verification.md` — audit requirements / integrity verification
+
+### Governance of this layout itself
+- `failure-doctrine.md` — the ten rules, playbook, and constitution the flat layout implements
+- `tickets-flattening.md` — one full ticket per removed directory, plus the `.git` keep-ticket
+- `manifest.json` — old path → new path edges with SHA-256 receipts for the flattening
+- `ORCHESTRATION_AND_COMPLIANCE.md` — technical orchestration documentation
+- `CONTRIBUTING.md` — data governance policies and contribution process
 
 ## 🛠️ Key Features
 
@@ -78,10 +94,10 @@ ai-agents-data-logs/
 - **Regulatory Compliance**: Built-in support for GDPR, SOX, HIPAA, PCI-DSS
 
 ### 5. Interactive Execution Ledger
-- **Live Recording**: Agents append entries via `scripts/execution_ledger.py` while executing — one event per write, timestamps assigned by the ledger, never batch-fabricated
-- **Tamper Evidence**: SHA-256 hash chain over `logs/execution-ledger/ledger.jsonl` with end-to-end `verify`
+- **Live Recording**: Agents append entries via `execution_ledger.py` while executing — one event per write, timestamps assigned by the ledger, never batch-fabricated
+- **Tamper Evidence**: SHA-256 hash chain over `ledger.jsonl` with end-to-end `verify`
 - **Constraint Tracking**: Sessions declare `must_not`/`must` constraints; every close carries an upheld/violated report
-- **Documentation**: See [docs/EXECUTION_LEDGER.md](docs/EXECUTION_LEDGER.md)
+- **Documentation**: See [EXECUTION_LEDGER.md](EXECUTION_LEDGER.md)
 
 ## 📋 Sample Configurations
 
@@ -185,10 +201,8 @@ workflow:
 ## 🚦 Getting Started
 
 ### Prerequisites
-- Node.js 18+ or Python 3.9+
-- Docker and Docker Compose
-- Kubernetes cluster (for production deployment)
-- JSON Schema validation tools
+- Python 3.9+ (standard library only for the ledger and tests)
+- Optional: `ajv-cli` for JSON Schema validation, PyYAML for YAML checks
 
 ### Quick Start
 ```bash
@@ -196,27 +210,29 @@ workflow:
 git clone https://github.com/Donaldjohns0n/ai-agents-data-logs.git
 cd ai-agents-data-logs
 
-# Install validation tools
-npm install -g ajv-cli
+# Validate the repository (flat invariant, manifest, hashes, ledger chain, tests)
+bash validate.sh
 
-# Validate schemas
-ajv validate -s data/schemas/agent-manifest-schema.json -d "agents/manifests/*.json"
-ajv validate -s data/schemas/receipt-schema.json -d "receipts/**/*.json"
+# Optional schema validation with ajv
+npm install -g ajv-cli
+ajv validate -s agent-manifest-schema.json -d agent-registry.json
+ajv validate -s receipt-schema.json -d ml-training-receipt-20241219.json
 ```
 
 ### Configuration
-1. Review the agent templates in `agents/templates/`
-2. Customize agent configurations in `agents/configs/`
-3. Deploy agent manifests from `agents/manifests/`
-4. Monitor logs in the `logs/` directory
-5. Review compliance reports in `compliance/reports/`
+1. Review `agent-config-template.yaml` for configuration examples
+2. Customize agent configurations such as `ml-training-agent-config.json`
+3. Deploy from the manifests `agent-registry.json` / `data-processing-agent.yaml`
+4. Record live activity through `execution_ledger.py`; read it with `tail` / `query`
+5. Trace any file's origin through `manifest.json`
 
 ## 📚 Documentation
 
 - **[Contributing Guidelines](CONTRIBUTING.md)**: Data governance policies and contribution process
-- **[Orchestration Framework](docs/ORCHESTRATION_AND_COMPLIANCE.md)**: Technical documentation for cross-agent orchestration
-- **Agent Configuration**: See `agents/templates/` for configuration examples
-- **Schema Documentation**: JSON schemas available in `data/schemas/`
+- **[Orchestration Framework](ORCHESTRATION_AND_COMPLIANCE.md)**: Technical documentation for cross-agent orchestration
+- **[Execution Ledger](EXECUTION_LEDGER.md)**: Recording and verifying live agent activity
+- **[Failure Doctrine](failure-doctrine.md)**: The rules this repository's layout and processes implement
+- **Schema Documentation**: `agent-manifest-schema.json`, `receipt-schema.json`, `execution-ledger-entry-schema.json`
 
 ## 🔒 Security
 
@@ -229,7 +245,7 @@ ajv validate -s data/schemas/receipt-schema.json -d "receipts/**/*.json"
 
 For questions, issues, or contributions:
 - **Data Governance**: Review [CONTRIBUTING.md](CONTRIBUTING.md)
-- **Technical Issues**: Check the documentation in `docs/`
+- **Technical Issues**: Start from this README's layout map and `manifest.json`
 - **Security Concerns**: Follow incident response procedures
 - **Compliance Questions**: Contact the compliance team
 

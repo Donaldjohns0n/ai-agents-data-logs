@@ -42,40 +42,36 @@ All data contributions must meet these quality standards:
 
 ## Repository Structure
 
-```
-ai-agents-data-logs/
-├── data/                   # Data storage and management
-│   ├── raw/               # Unprocessed data
-│   ├── processed/         # Cleaned and transformed data
-│   ├── schemas/           # Data validation schemas
-│   └── exports/           # Data exports for reporting
-├── logs/                  # Centralized logging
-│   ├── access/           # Access and authentication logs
-│   ├── audit/            # Security and compliance logs
-│   ├── error/            # Error logs and exceptions
-│   └── performance/      # Performance metrics
-├── agents/               # Agent configuration and management
-│   ├── configs/          # Agent configurations
-│   ├── manifests/        # Deployment manifests
-│   ├── templates/        # Configuration templates
-│   └── runtime/          # Runtime state files
-├── provenance/           # Data lineage and provenance
-│   ├── chains/           # Operation chains
-│   ├── lineage/          # Data lineage tracking
-│   └── metadata/         # Provenance metadata
-├── receipts/             # Transaction receipts and confirmations
-│   ├── transactions/     # Financial transactions
-│   ├── operations/       # Operation confirmations
-│   └── completions/      # Workflow completion certificates
-├── compliance/           # Regulatory compliance
-│   ├── policies/         # Compliance policies
-│   ├── reports/          # Regulatory reports
-│   └── certifications/   # Compliance certifications
-└── audit/               # Comprehensive audit trails
-    ├── trails/          # Detailed audit trails
-    ├── reviews/         # Audit reviews and findings
-    └── assessments/     # Security assessments
-```
+The repository is **flat**: every file lives at the root, and no directory may
+exist without a full ticket in `tickets-flattening.md` (see
+`failure-doctrine.md` for why — relations over categories). A file's family is
+carried by its content and its recorded relations, not by a folder:
+
+- **Execution ledger**: `execution_ledger.py`, `ledger.jsonl`,
+  `execution-ledger-entry-schema.json`, `EXECUTION_LEDGER.md`,
+  `test_execution_ledger.py`
+- **Agent configuration**: `agent-config-template.yaml`,
+  `ml-training-agent-config.json`, `agent-registry.json`,
+  `data-processing-agent.yaml`
+- **Schemas & validation**: `agent-manifest-schema.json`,
+  `receipt-schema.json`, `execution-ledger-entry-schema.json`, `validate.sh`
+- **Logs**: `ml-training-audit-20241219.jsonl`, `copilot-*.jsonl`,
+  `orchestration-events-20240924.jsonl`
+- **Receipts**: `api-service-call-receipt-20241219.json`,
+  `ml-training-receipt-20241219.json`,
+  `workflow-completion-certificate-20241219.json`,
+  `cross-platform-sync-receipt.json`, `master-quest-pr10-receipt.json`
+- **Provenance**: `customer-onboarding-workflow-provenance.json`,
+  `sentiment-model-v2.3-lineage.json`
+- **Audit & compliance**: `comprehensive-audit-trail-20241219.json`,
+  `cross-agent-orchestration-audit-20240924.json`,
+  `agent-execution-negative-constraints-20260828.md`,
+  `data-governance-policy.md`, `integrity-verification.md`
+- **Layout governance**: `manifest.json` (old path → new path edges with
+  SHA-256 receipts), `tickets-flattening.md`, `failure-doctrine.md`
+
+New files are added at the root. Historical files retain pre-flattening path
+strings in their content; resolve them through `manifest.json`.
 
 ## Data Classification and Handling
 
@@ -291,17 +287,17 @@ git clone https://github.com/Donaldjohns0n/ai-agents-data-logs.git
 npm install -g ajv-cli
 
 # Validate schemas
-ajv validate -s data/schemas/agent-manifest-schema.json -d "agents/manifests/*.json"
+ajv validate -s agent-manifest-schema.json -d agent-registry.json
 ```
 
 ### 2. Data Validation
 
 ```bash
 # Validate agent manifests
-ajv validate -s data/schemas/agent-manifest-schema.json -d agents/manifests/agent-registry.json
+ajv validate -s agent-manifest-schema.json -d agent-registry.json
 
 # Validate receipts
-ajv validate -s data/schemas/receipt-schema.json -d "receipts/**/*.json"
+ajv validate -s receipt-schema.json -d ml-training-receipt-20241219.json -d api-service-call-receipt-20241219.json -d workflow-completion-certificate-20241219.json -d cross-platform-sync-receipt.json -d master-quest-pr10-receipt.json
 ```
 
 ### 3. Contribution Workflow

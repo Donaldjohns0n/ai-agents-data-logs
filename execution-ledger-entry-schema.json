@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://ai-agents.internal/schemas/execution-ledger-entry.json",
   "title": "Execution Ledger Entry Schema",
-  "description": "One append-only, hash-chained entry in logs/execution-ledger/ledger.jsonl. Entries are written one at a time by scripts/execution_ledger.py while an agent actually executes; timestamps are assigned by the ledger at append time and are never caller-supplied. Batch-fabricated or back-dated records are a policy violation (signal: agent-execution-negative-constraints).",
+  "description": "One append-only, hash-chained entry in ledger.jsonl. Entries are written one at a time by execution_ledger.py while an agent actually executes; timestamps are assigned by the ledger at append time and are never caller-supplied. Batch-fabricated or back-dated records are a policy violation (signal: agent-execution-negative-constraints).",
   "type": "object",
   "required": ["seq", "timestamp", "ledger_version", "entry_type", "session_id", "prev_hash", "entry_hash"],
   "properties": {

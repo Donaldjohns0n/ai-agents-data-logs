@@ -1,16 +1,16 @@
 # Interactive Execution Ledger
 
-`scripts/execution_ledger.py` is the live, append-only record of agent
+`execution_ledger.py` is the live, append-only record of agent
 execution in this repository. Agents (or their operators) write to it **while
 work is happening**, one entry at a time; they do not deposit pre-built
-histories into it. The ledger store is `logs/execution-ledger/ledger.jsonl`,
+histories into it. The ledger store is `ledger.jsonl`,
 and every entry validates against
-`data/schemas/execution-ledger-entry-schema.json`.
+`execution-ledger-entry-schema.json`.
 
 ## Why this exists
 
 Remediation for signal **agent-execution-negative-constraints** (recorded in
-`audit/reviews/agent-execution-negative-constraints-20260828.md`): an agent
+`agent-execution-negative-constraints-20260828.md`): an agent
 run asked to produce an interactive execution ledger misinterpreted its
 negative constraints and instead batch-generated a static data dump —
 plausible-looking records fabricated in one shot with invented timestamps.
@@ -23,7 +23,7 @@ to repeat:
 
 | Failure mode in the signal | Structural countermeasure |
 | --- | --- |
-| Records fabricated in one batch | No bulk-import path; the only write operation appends exactly one entry. Imported/simulated history belongs in `logs/imported/`, never here. |
+| Records fabricated in one batch | No bulk-import path; the only write operation appends exactly one entry. Imported/simulated history lives in the imported `copilot-*.jsonl` files (origins in `manifest.json`), never here. |
 | Invented timestamps | The ledger stamps every entry with its own UTC clock at append time; callers cannot supply a timestamp. |
 | Silent rewriting of history | SHA-256 hash chain: each entry commits to its predecessor. `verify` detects edits, deletions, and reordering. |
 | Negative constraints ignored | Constraints (`must_not` / `must`) are declared at session open, events can flag violations, and every session close carries a per-constraint upheld/violated report. Misinterpretation becomes a visible record instead of a quiet failure. |
@@ -33,7 +33,7 @@ to repeat:
 Open a session when an agent starts a task, declaring its constraints:
 
 ```bash
-python3 scripts/execution_ledger.py open \
+python3 execution_ledger.py open \
   --agent agent-claude-code \
   --task "Refactor the receipt validator" \
   --must-not "fabricate records not produced by real execution" \
@@ -44,12 +44,12 @@ python3 scripts/execution_ledger.py open \
 Record events one at a time, as they happen:
 
 ```bash
-python3 scripts/execution_ledger.py record \
+python3 execution_ledger.py record \
   --session exec-20260828-153000-a1b2c3 \
   --type tool_call --message "ran unit tests" --meta result=pass
 
 # if a declared constraint was violated, say so — that is the point:
-python3 scripts/execution_ledger.py record \
+python3 execution_ledger.py record \
   --session exec-20260828-153000-a1b2c3 \
   --type error --message "wrote records without executing" --violates N1
 ```
@@ -58,7 +58,7 @@ Close the session with an outcome; the close entry includes the constraint
 report:
 
 ```bash
-python3 scripts/execution_ledger.py close \
+python3 execution_ledger.py close \
   --session exec-20260828-153000-a1b2c3 \
   --outcome completed --summary "validator refactored, tests green"
 ```
@@ -66,16 +66,16 @@ python3 scripts/execution_ledger.py close \
 Inspect and verify:
 
 ```bash
-python3 scripts/execution_ledger.py sessions        # session list + status
-python3 scripts/execution_ledger.py tail -n 20      # recent entries, readable
-python3 scripts/execution_ledger.py query --session exec-... # filtered JSONL
-python3 scripts/execution_ledger.py verify          # end-to-end hash chain
+python3 execution_ledger.py sessions        # session list + status
+python3 execution_ledger.py tail -n 20      # recent entries, readable
+python3 execution_ledger.py query --session exec-... # filtered JSONL
+python3 execution_ledger.py verify          # end-to-end hash chain
 ```
 
 Or drive it interactively:
 
 ```bash
-python3 scripts/execution_ledger.py interactive
+python3 execution_ledger.py interactive
 ledger> open agent-claude-code investigate flaky test
 ledger> record exec-... step reproduced the failure locally
 ledger> close exec-... completed root cause fixed
@@ -105,5 +105,5 @@ type-specific fields.
 ## Tests
 
 ```bash
-python3 -m unittest discover tests
+python3 -m unittest discover -s . -p "test_*.py"
 ```
