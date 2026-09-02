@@ -1,7 +1,7 @@
-"""Tests for scripts/execution_ledger.py.
+"""Tests for execution_ledger.py.
 
 Run from the repository root with:
-    python3 -m unittest discover tests
+    python3 -m unittest discover -s . -p "test_*.py"
 """
 
 import json
@@ -10,7 +10,7 @@ import sys
 import tempfile
 import unittest
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scripts"))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from execution_ledger import (  # noqa: E402
     GENESIS_HASH,

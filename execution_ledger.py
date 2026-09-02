@@ -8,8 +8,8 @@ ledger below is built so that failure mode is structurally impossible to
 repeat quietly:
 
 - Entries are appended one at a time, as execution actually happens. There is
-  no bulk-import path; historical/simulated data belongs in ``logs/imported/``,
-  never here.
+  no bulk-import path; historical/simulated data lives in the imported
+  ``copilot-*.jsonl`` files (origins recorded in ``manifest.json``), never here.
 - The ledger assigns every timestamp itself at append time. Callers cannot
   supply timestamps, so records cannot be back-dated to fake a history.
 - Entries form a SHA-256 hash chain (each entry commits to its predecessor),
@@ -31,9 +31,9 @@ Usage:
     execution_ledger.py sessions | tail [-n N] | query [...] | verify
     execution_ledger.py interactive
 
-The store is ``logs/execution-ledger/ledger.jsonl`` relative to the repo root
+The store is ``ledger.jsonl`` beside this script at the flat repository root
 (override with --ledger). Entries validate against
-``data/schemas/execution-ledger-entry-schema.json``.
+``execution-ledger-entry-schema.json``.
 """
 
 import argparse
@@ -47,7 +47,7 @@ import uuid
 
 GENESIS_HASH = "0" * 64
 LEDGER_VERSION = "1.0"
-DEFAULT_LEDGER = os.path.join("logs", "execution-ledger", "ledger.jsonl")
+DEFAULT_LEDGER = "ledger.jsonl"
 
 ENTRY_TYPES = ("session_open", "event", "session_close")
 OUTCOMES = ("completed", "failed")
@@ -72,9 +72,8 @@ def _entry_hash(entry):
 
 
 def _repo_root():
-    """Walk upward from this script to the repository root."""
-    here = os.path.dirname(os.path.abspath(__file__))
-    return os.path.dirname(here)
+    """Directory containing this script (= the flat repository root)."""
+    return os.path.dirname(os.path.abspath(__file__))
 
 
 class ExecutionLedger:
