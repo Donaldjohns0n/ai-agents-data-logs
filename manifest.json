@@ -1,0 +1,552 @@
+{
+  "operation": {
+    "name": "repository-flattening",
+    "date": "2026-09-02",
+    "branch": "claude/agent-execution-negative-constraints-uj7lpz",
+    "base_commit": "8a0886f",
+    "pure_move_commit": "cc4cad4",
+    "ledger_session": "exec-20260902-170823-b2eb2a",
+    "doctrine": "failure-doctrine.md",
+    "tickets": "tickets-flattening.md",
+    "note": "the receipts and session-close commits are this commit and its successor; their shas cannot be self-recorded"
+  },
+  "files": [
+    {
+      "old_path": ".gitignore",
+      "new_path": ".gitignore",
+      "status": "unchanged",
+      "pre_sha256": "48b33f9f89ef24f8a66f461ea9278e7ecf21b4660c26088989d231e53c578724",
+      "post_sha256": "48b33f9f89ef24f8a66f461ea9278e7ecf21b4660c26088989d231e53c578724",
+      "git_blob_oid": "b7faf403d915ca307532bb0eb9cceaf0214e8e5b"
+    },
+    {
+      "old_path": "CONTRIBUTING.md",
+      "new_path": "CONTRIBUTING.md",
+      "status": "edited",
+      "pre_sha256": "f42709d3a10df5bbe4216a352fe505ee30d88bfc4b8f586c472a1ff5c8787a50",
+      "post_sha256": "77734b1408a735851afb1c73958d03fa1b6e96f60d135d0b3dd96ef5674c04a2",
+      "git_blob_oid": "42fc6f316bda436154eb73202c72d9caaebda40e",
+      "edited_in": "C4"
+    },
+    {
+      "old_path": "docs/EXECUTION_LEDGER.md",
+      "new_path": "EXECUTION_LEDGER.md",
+      "status": "edited",
+      "pre_sha256": "9430096e093c9cf3d81f620cb567a1b5b5b8f0811079fab39f87da142da995ca",
+      "post_sha256": "adff6f05e3e846731301e9ab5f324530f25e0cb1089b2654c74c616b7a6b90a2",
+      "git_blob_oid": "115d5dc6f301bc95d370e1cd145a25724076e0bb",
+      "edited_in": "C4"
+    },
+    {
+      "old_path": "docs/ORCHESTRATION_AND_COMPLIANCE.md",
+      "new_path": "ORCHESTRATION_AND_COMPLIANCE.md",
+      "status": "moved",
+      "pre_sha256": "b43960e83c53d98dd8a44572b2efbe461ff872debf9be95a93e8c33bae70b3f6",
+      "post_sha256": "b43960e83c53d98dd8a44572b2efbe461ff872debf9be95a93e8c33bae70b3f6",
+      "git_blob_oid": "cb4a17af29fbb2947810f169cb29852159c6d363"
+    },
+    {
+      "old_path": "README.md",
+      "new_path": "README.md",
+      "status": "edited",
+      "pre_sha256": "333fed85d859bdd6710d384cef805326d349031069d9c87b75464aeb0f5c99bf",
+      "post_sha256": "9b767541418cfe7e1382efc98cfe9d3fc6836655950e2527ec9464b249e12601",
+      "git_blob_oid": "5ef8122e2ec1e515875bc09634ab9309092575c6",
+      "edited_in": "C4"
+    },
+    {
+      "old_path": "agents/templates/agent-config-template.yaml",
+      "new_path": "agent-config-template.yaml",
+      "status": "moved",
+      "pre_sha256": "c1f863c50823750e6486bd9535ed7654ff998449819e0f7e6200a681e54f96ba",
+      "post_sha256": "c1f863c50823750e6486bd9535ed7654ff998449819e0f7e6200a681e54f96ba",
+      "git_blob_oid": "3cbd68ec76f0ba1eeadd79cbdfa19df4635397e8"
+    },
+    {
+      "old_path": "audit/reviews/agent-execution-negative-constraints-20260828.md",
+      "new_path": "agent-execution-negative-constraints-20260828.md",
+      "status": "moved",
+      "pre_sha256": "037f48b18cad6ecafb680b2d80207d4fd7d19d74ca238927bd0d109413f98519",
+      "post_sha256": "037f48b18cad6ecafb680b2d80207d4fd7d19d74ca238927bd0d109413f98519",
+      "git_blob_oid": "e5040f32620674fe988ea34306328271c89214bd"
+    },
+    {
+      "old_path": "data/schemas/agent-manifest-schema.json",
+      "new_path": "agent-manifest-schema.json",
+      "status": "moved",
+      "pre_sha256": "69ae239bc51d5b0ddf5cb1903152d4b5d7185c6533760b373553cf7b011fd966",
+      "post_sha256": "69ae239bc51d5b0ddf5cb1903152d4b5d7185c6533760b373553cf7b011fd966",
+      "git_blob_oid": "0709060a5fd78d77603d45ffd933b81e1f7bc1f5"
+    },
+    {
+      "old_path": "agents/manifests/agent-registry.json",
+      "new_path": "agent-registry.json",
+      "status": "moved",
+      "pre_sha256": "0b57cd614f8b0cdfcdeb934afffe77745665ec8b244db8a2c51be881741b40bb",
+      "post_sha256": "0b57cd614f8b0cdfcdeb934afffe77745665ec8b244db8a2c51be881741b40bb",
+      "git_blob_oid": "c17641ba61c86ae16d23fc1b613acc593fafe665"
+    },
+    {
+      "old_path": "receipts/transactions/api-service-call-receipt-20241219.json",
+      "new_path": "api-service-call-receipt-20241219.json",
+      "status": "moved",
+      "pre_sha256": "966774acd0eb865ed36ed372f2dc19ee135518fe134c12a8f4ee8ad8abe81bfd",
+      "post_sha256": "966774acd0eb865ed36ed372f2dc19ee135518fe134c12a8f4ee8ad8abe81bfd",
+      "git_blob_oid": "26b04031ebd0201fbc7e04b944f67fe9780294b3"
+    },
+    {
+      "old_path": "data/sessions/comet-assistant-sessions/comet-browser-session-20240920.json",
+      "new_path": "comet-browser-session-20240920.json",
+      "status": "moved",
+      "pre_sha256": "0e36deae0c3ed3785c9904277b0ff8b0508fbef50ef6b18a4658eae3dc52079d",
+      "post_sha256": "0e36deae0c3ed3785c9904277b0ff8b0508fbef50ef6b18a4658eae3dc52079d",
+      "git_blob_oid": "4fe29e0a8ed357331d70f804d894d56e476c78f9"
+    },
+    {
+      "old_path": "audit/trails/comprehensive-audit-trail-20241219.json",
+      "new_path": "comprehensive-audit-trail-20241219.json",
+      "status": "moved",
+      "pre_sha256": "874cf7f714ec53c2c7458f746f577fcf69961d73409b9bccda0a8f24f087ca05",
+      "post_sha256": "874cf7f714ec53c2c7458f746f577fcf69961d73409b9bccda0a8f24f087ca05",
+      "git_blob_oid": "45206b5736dc7419bc388633b7518ebf6d09229e"
+    },
+    {
+      "old_path": "logs/imported/copilot-master-quest-pr10-20240924.jsonl",
+      "new_path": "copilot-master-quest-pr10-20240924.jsonl",
+      "status": "moved",
+      "pre_sha256": "924e869dd5f2421700431803728cc5d22fc5f519385ad62270b22fbb6d4770d1",
+      "post_sha256": "924e869dd5f2421700431803728cc5d22fc5f519385ad62270b22fbb6d4770d1",
+      "git_blob_oid": "5f95866c6fbda960734f023d20bd9b3527e4ac32"
+    },
+    {
+      "old_path": "logs/imported/copilot-session-20240924.jsonl",
+      "new_path": "copilot-session-20240924.jsonl",
+      "status": "moved",
+      "pre_sha256": "42dc4ca3bb219dd57471c011ba68722375a386da68d01edc8739c11bdf87f6d3",
+      "post_sha256": "42dc4ca3bb219dd57471c011ba68722375a386da68d01edc8739c11bdf87f6d3",
+      "git_blob_oid": "010085071a8c14190a1fc1343ae7853f39a310a2"
+    },
+    {
+      "old_path": "data/sessions/master-quest-sessions/copilot-session-ai-data-logs-20240924.json",
+      "new_path": "copilot-session-ai-data-logs-20240924.json",
+      "status": "moved",
+      "pre_sha256": "c35191129d9ff6c0f5c734b4f3acb29b9226aba45d1890ae1754c4f3d43c24b6",
+      "post_sha256": "c35191129d9ff6c0f5c734b4f3acb29b9226aba45d1890ae1754c4f3d43c24b6",
+      "git_blob_oid": "96af665c876995dfbff5e7692d184f817eb47f00"
+    },
+    {
+      "old_path": "data/manifests/cross-agent-coordination-manifest.yaml",
+      "new_path": "cross-agent-coordination-manifest.yaml",
+      "status": "moved",
+      "pre_sha256": "cdd12938793b763090ea4b2b7291762766c517f80797e2e62c44830b65874ed0",
+      "post_sha256": "cdd12938793b763090ea4b2b7291762766c517f80797e2e62c44830b65874ed0",
+      "git_blob_oid": "fe5408ba3d6e9a54c8b5d0ddbdb0eed072224c04"
+    },
+    {
+      "old_path": "audit/trails/cross-agent-orchestration-audit-20240924.json",
+      "new_path": "cross-agent-orchestration-audit-20240924.json",
+      "status": "moved",
+      "pre_sha256": "3a128adf0575c1ccc37aa81f7a688bb692c2578d7af6dae5b70e62ba0cd4702b",
+      "post_sha256": "3a128adf0575c1ccc37aa81f7a688bb692c2578d7af6dae5b70e62ba0cd4702b",
+      "git_blob_oid": "642c7c425e0f7075c31bdb3f5dcce3a790f4c89c"
+    },
+    {
+      "old_path": "receipts/import-receipts/cross-platform-sync-receipt.json",
+      "new_path": "cross-platform-sync-receipt.json",
+      "status": "moved",
+      "pre_sha256": "a039a1712d4152b1f2ef19e9bd4f2ef404f04f4b91f994a062e76bef24cfec36",
+      "post_sha256": "a039a1712d4152b1f2ef19e9bd4f2ef404f04f4b91f994a062e76bef24cfec36",
+      "git_blob_oid": "af228a2f552b2820702f9fad2cb46846616d0ec8"
+    },
+    {
+      "old_path": "provenance/chains/customer-onboarding-workflow-provenance.json",
+      "new_path": "customer-onboarding-workflow-provenance.json",
+      "status": "moved",
+      "pre_sha256": "3f5c3b03fc9c044b9e46060dfe5d11cdc63dde567b2782af30891c480a497d6e",
+      "post_sha256": "3f5c3b03fc9c044b9e46060dfe5d11cdc63dde567b2782af30891c480a497d6e",
+      "git_blob_oid": "d7686c0d49b1c48e2ad630d21f2fb46447d7501b"
+    },
+    {
+      "old_path": "compliance/policies/data-governance-policy.md",
+      "new_path": "data-governance-policy.md",
+      "status": "moved",
+      "pre_sha256": "e1d95dbbca87ca08449fdad83ea1a6ed7d63cd92eb02db8008de60ee90efd105",
+      "post_sha256": "e1d95dbbca87ca08449fdad83ea1a6ed7d63cd92eb02db8008de60ee90efd105",
+      "git_blob_oid": "2becb658c3db2d089ea6311bd2293ec4feabfe00"
+    },
+    {
+      "old_path": "agents/manifests/data-processing-agent.yaml",
+      "new_path": "data-processing-agent.yaml",
+      "status": "moved",
+      "pre_sha256": "01c2060fa6d92d4f5ac6f00b08230527ec35f50c74923b0d9c9f2fe7c0c12a5d",
+      "post_sha256": "01c2060fa6d92d4f5ac6f00b08230527ec35f50c74923b0d9c9f2fe7c0c12a5d",
+      "git_blob_oid": "645ccfa5b99ab05589f7dcde67ac5fd1f38db8ba"
+    },
+    {
+      "old_path": "data/schemas/execution-ledger-entry-schema.json",
+      "new_path": "execution-ledger-entry-schema.json",
+      "status": "edited",
+      "pre_sha256": "2043e0995867cec4105a45ae45eda0d543e05e03b32ef88d6510c36c31e59bbb",
+      "post_sha256": "1d94aa42bab5b3b9e82150c2e32b06b94a6fc6aae8b7577f93f3db23af52574d",
+      "git_blob_oid": "b3d8481f404f0752e7794fabc8d028afa2abab01",
+      "edited_in": "C4"
+    },
+    {
+      "old_path": "scripts/execution_ledger.py",
+      "new_path": "execution_ledger.py",
+      "status": "edited",
+      "pre_sha256": "697517f839effcc27d45b4d7cee1ed8a4df96e9b3c46aa386e03d912e2450f23",
+      "post_sha256": "8cb7f31a6c4430d2233c8e97fe384f789bbadaabf4ea14288df6c1c116ef0255",
+      "git_blob_oid": "efbfe0c65c0c7182545cf7ce068ad312b7e58546",
+      "edited_in": "C3"
+    },
+    {
+      "old_path": null,
+      "new_path": "failure-doctrine.md",
+      "status": "created",
+      "pre_sha256": null,
+      "post_sha256": "32846f0873d13f8a2ab1502bb81eb59dbd16b5badf6005cf34e72890fa754e77",
+      "note": null
+    },
+    {
+      "old_path": "compliance/audit-requirements/integrity-verification.md",
+      "new_path": "integrity-verification.md",
+      "status": "moved",
+      "pre_sha256": "187ff2a7aee527053cdde0f3992df6faea7a92ded16d5b7ba878ce9352322ddf",
+      "post_sha256": "187ff2a7aee527053cdde0f3992df6faea7a92ded16d5b7ba878ce9352322ddf",
+      "git_blob_oid": "b56ca0ed8ab1057d38cc000e56ca96024b18fe00"
+    },
+    {
+      "old_path": "logs/execution-ledger/ledger.jsonl",
+      "new_path": "ledger.jsonl",
+      "status": "moved",
+      "pre_sha256": "955b62ac24f6af342c9d8eb8ff888db4897b9310a4c77cf945b3b46fafb39d3c",
+      "post_sha256": null,
+      "note": "append-only hash-chained ledger; integrity governed by ledger_exception, not a static hash"
+    },
+    {
+      "old_path": null,
+      "new_path": "manifest.json",
+      "status": "created",
+      "pre_sha256": null,
+      "post_sha256": null,
+      "note": "self-hash impossible"
+    },
+    {
+      "old_path": "receipts/workflow-receipts/master-quest-pr10-receipt.json",
+      "new_path": "master-quest-pr10-receipt.json",
+      "status": "moved",
+      "pre_sha256": "2b3a25bffb081fd96b2580b8c04c2170d1f5089a61f56183688ddbdb668f4a4d",
+      "post_sha256": "2b3a25bffb081fd96b2580b8c04c2170d1f5089a61f56183688ddbdb668f4a4d",
+      "git_blob_oid": "40140fbe77710b1751b3708b713427e7d72783c6"
+    },
+    {
+      "old_path": "agents/configs/ml-training-agent-config.json",
+      "new_path": "ml-training-agent-config.json",
+      "status": "moved",
+      "pre_sha256": "9a7ea59c8b6746517a9c382659b7ebd9a199afb45edfddcd675834dc719b8dbe",
+      "post_sha256": "9a7ea59c8b6746517a9c382659b7ebd9a199afb45edfddcd675834dc719b8dbe",
+      "git_blob_oid": "b0dae680667c2575386cef65f7ee03ba9dd87c25"
+    },
+    {
+      "old_path": "logs/audit/ml-training-audit-20241219.jsonl",
+      "new_path": "ml-training-audit-20241219.jsonl",
+      "status": "moved",
+      "pre_sha256": "d62b22aa0998ee17611ccfb25cd0769f90123f617855aada0aa6d2c669f74898",
+      "post_sha256": "d62b22aa0998ee17611ccfb25cd0769f90123f617855aada0aa6d2c669f74898",
+      "git_blob_oid": "624ce754bb6703ed0e9657489ed0fb6b4cb8963b"
+    },
+    {
+      "old_path": "receipts/operations/ml-training-receipt-20241219.json",
+      "new_path": "ml-training-receipt-20241219.json",
+      "status": "moved",
+      "pre_sha256": "7d61c189076cb67d1091e42226249c89d2d2837c1a415783fdb005c3d2d238bd",
+      "post_sha256": "7d61c189076cb67d1091e42226249c89d2d2837c1a415783fdb005c3d2d238bd",
+      "git_blob_oid": "d639468b77e408b0e3230514125c539afd209a79"
+    },
+    {
+      "old_path": "logs/orchestration/orchestration-events-20240924.jsonl",
+      "new_path": "orchestration-events-20240924.jsonl",
+      "status": "moved",
+      "pre_sha256": "eec630d9c6877ee8402af99056ff78df8ba3a1f7327c2717155be162ff137d0e",
+      "post_sha256": "eec630d9c6877ee8402af99056ff78df8ba3a1f7327c2717155be162ff137d0e",
+      "git_blob_oid": "4c8594efe918f1298a75c719bfe259542a6962b2"
+    },
+    {
+      "old_path": "data/schemas/receipt-schema.json",
+      "new_path": "receipt-schema.json",
+      "status": "moved",
+      "pre_sha256": "1ca0850cf2968e0ddf400c454ef26e5a429e9e7dc8fae964b24f5e5f85c16de3",
+      "post_sha256": "1ca0850cf2968e0ddf400c454ef26e5a429e9e7dc8fae964b24f5e5f85c16de3",
+      "git_blob_oid": "7e68262f6705294b8a39df2dad028dba00bdc830"
+    },
+    {
+      "old_path": "provenance/lineage/sentiment-model-v2.3-lineage.json",
+      "new_path": "sentiment-model-v2.3-lineage.json",
+      "status": "moved",
+      "pre_sha256": "b94431748230f38b822e21ed58fca9a354e446a242f58a94254d89032f512787",
+      "post_sha256": "b94431748230f38b822e21ed58fca9a354e446a242f58a94254d89032f512787",
+      "git_blob_oid": "27d94bb8fa8a43180628b4b5d802abc819bf8e54"
+    },
+    {
+      "old_path": "tests/test_execution_ledger.py",
+      "new_path": "test_execution_ledger.py",
+      "status": "edited",
+      "pre_sha256": "bb158b5fcfbad653dce1ca83685d69867acb21d532e6097bef138c7467daa387",
+      "post_sha256": "d55ca91f550984eb2ad19ad7337c877b505c3877163e3e8d5a01852db8d92e75",
+      "git_blob_oid": "11cd0e3325effd4d0616679e64783e98afb0cd00",
+      "edited_in": "C3"
+    },
+    {
+      "old_path": null,
+      "new_path": "tickets-flattening.md",
+      "status": "created",
+      "pre_sha256": null,
+      "post_sha256": "b918fc3b4265b0c1c875ec3bc877cfcb09ba8482ae42d82facee1332d408ce94",
+      "note": null
+    },
+    {
+      "old_path": null,
+      "new_path": "validate.sh",
+      "status": "created",
+      "pre_sha256": null,
+      "post_sha256": "82779546856c4af20e50c26e3b00803ded7c516d26c6380aeeee78b180ab9c51",
+      "note": null
+    },
+    {
+      "old_path": "receipts/completions/workflow-completion-certificate-20241219.json",
+      "new_path": "workflow-completion-certificate-20241219.json",
+      "status": "moved",
+      "pre_sha256": "2b2c5b85d115e621668828a4ad2dfa1698ace8483029462fd00bbf1b2572b834",
+      "post_sha256": "2b2c5b85d115e621668828a4ad2dfa1698ace8483029462fd00bbf1b2572b834",
+      "git_blob_oid": "f103a9bef2215ca2d2f42a1a9392c5e3707ce2a6"
+    },
+    {
+      "old_path": "agents/README.md",
+      "new_path": null,
+      "status": "merged_deleted",
+      "pre_sha256": "f18ff6c5cf0e80045685ac8c5f82f6e3b3f753119ef42075e78c6435e66c193e",
+      "post_sha256": null,
+      "merged_into": "README.md",
+      "full_text_in": "tickets-flattening.md"
+    },
+    {
+      "old_path": "audit/README.md",
+      "new_path": null,
+      "status": "merged_deleted",
+      "pre_sha256": "12e6b0fdbf56b34ab3c711c39822fcca01ebe687db052e4a4d57c492972d6850",
+      "post_sha256": null,
+      "merged_into": "README.md",
+      "full_text_in": "tickets-flattening.md"
+    },
+    {
+      "old_path": "compliance/README.md",
+      "new_path": null,
+      "status": "merged_deleted",
+      "pre_sha256": "581fe2adbe06c36c7610006c24b20223ffcdebfd14d90a0f49d6f95bb991f0e4",
+      "post_sha256": null,
+      "merged_into": "README.md",
+      "full_text_in": "tickets-flattening.md"
+    },
+    {
+      "old_path": "data/README.md",
+      "new_path": null,
+      "status": "merged_deleted",
+      "pre_sha256": "7d1710dcae355a58a38ba57d0aa9511186fe3751f368f81c9097b79d98a2713a",
+      "post_sha256": null,
+      "merged_into": "README.md",
+      "full_text_in": "tickets-flattening.md"
+    },
+    {
+      "old_path": "logs/README.md",
+      "new_path": null,
+      "status": "merged_deleted",
+      "pre_sha256": "85713c39d6df6def011f113c19a0b681b2533f74ec08a201a60f469f22269a6c",
+      "post_sha256": null,
+      "merged_into": "README.md",
+      "full_text_in": "tickets-flattening.md"
+    },
+    {
+      "old_path": "provenance/README.md",
+      "new_path": null,
+      "status": "merged_deleted",
+      "pre_sha256": "61145488c7e7d58669659f03a9d9cc0cb1d1e43f9088fd8acb3d064ecb23bb8c",
+      "post_sha256": null,
+      "merged_into": "README.md",
+      "full_text_in": "tickets-flattening.md"
+    },
+    {
+      "old_path": "receipts/README.md",
+      "new_path": null,
+      "status": "merged_deleted",
+      "pre_sha256": "eb417ad2d1db328bb7c4cd4657f3ac12a06d97fa09e7706280d7ef3899a552e1",
+      "post_sha256": null,
+      "merged_into": "README.md",
+      "full_text_in": "tickets-flattening.md"
+    },
+    {
+      "old_path": "scripts/validate-imported-data.sh",
+      "new_path": null,
+      "status": "replaced",
+      "pre_sha256": "e2a52c06f213e7143db37de75f8b5f75d5d9f3662d2ead626b3234d96867a89e",
+      "post_sha256": null,
+      "replaced_by": "validate.sh",
+      "ticket": "T-09"
+    },
+    {
+      "old_path": "scripts/validate-repository.sh",
+      "new_path": null,
+      "status": "replaced",
+      "pre_sha256": "d96602476f2be530c9a071bf1e1c9f318c9a97cafb6e35c5b566f5c4e54e77bf",
+      "post_sha256": null,
+      "replaced_by": "validate.sh",
+      "ticket": "T-09"
+    }
+  ],
+  "ledger_exception": {
+    "file": "ledger.jsonl",
+    "old_path": "logs/execution-ledger/ledger.jsonl",
+    "pre_move_sha256": "955b62ac24f6af342c9d8eb8ff888db4897b9310a4c77cf945b3b46fafb39d3c",
+    "pre_move_lines": 7,
+    "historical_prefix_sha256": "f90940536ff0d97eade45874b2bc8c65d2839f08ae082ae7528215fadeb5b317",
+    "historical_prefix_lines": 5,
+    "post_prefix_sha256": "2ff5c44b3d32a26336cf26a27391ee5e4965f2d982ca2454f5244029cdd72d58",
+    "post_prefix_lines": 10,
+    "rule": "the first post_prefix_lines lines of ledger.jsonl must hash to post_prefix_sha256; all later lines are legitimate iff 'python3 execution_ledger.py verify' passes -- the chain is its own receipt",
+    "note": "historical entries contain pre-flattening path strings; resolve them via files[] edges. The ledger grew during the flattening via its own append path (session exec-20260902-170823-b2eb2a)."
+  },
+  "directories_removed": [
+    {
+      "path": "agents",
+      "ticket": "T-01"
+    },
+    {
+      "path": "agents/configs",
+      "ticket": "T-01"
+    },
+    {
+      "path": "agents/manifests",
+      "ticket": "T-01"
+    },
+    {
+      "path": "agents/templates",
+      "ticket": "T-01"
+    },
+    {
+      "path": "audit",
+      "ticket": "T-02"
+    },
+    {
+      "path": "audit/reviews",
+      "ticket": "T-02"
+    },
+    {
+      "path": "audit/trails",
+      "ticket": "T-02"
+    },
+    {
+      "path": "compliance",
+      "ticket": "T-03"
+    },
+    {
+      "path": "compliance/audit-requirements",
+      "ticket": "T-03"
+    },
+    {
+      "path": "compliance/policies",
+      "ticket": "T-03"
+    },
+    {
+      "path": "data",
+      "ticket": "T-04"
+    },
+    {
+      "path": "data/manifests",
+      "ticket": "T-04"
+    },
+    {
+      "path": "data/schemas",
+      "ticket": "T-04"
+    },
+    {
+      "path": "data/sessions",
+      "ticket": "T-04"
+    },
+    {
+      "path": "data/sessions/comet-assistant-sessions",
+      "ticket": "T-04"
+    },
+    {
+      "path": "data/sessions/master-quest-sessions",
+      "ticket": "T-04"
+    },
+    {
+      "path": "docs",
+      "ticket": "T-05"
+    },
+    {
+      "path": "logs",
+      "ticket": "T-06"
+    },
+    {
+      "path": "logs/audit",
+      "ticket": "T-06"
+    },
+    {
+      "path": "logs/execution-ledger",
+      "ticket": "T-06"
+    },
+    {
+      "path": "logs/imported",
+      "ticket": "T-06"
+    },
+    {
+      "path": "logs/orchestration",
+      "ticket": "T-06"
+    },
+    {
+      "path": "provenance",
+      "ticket": "T-07"
+    },
+    {
+      "path": "provenance/chains",
+      "ticket": "T-07"
+    },
+    {
+      "path": "provenance/lineage",
+      "ticket": "T-07"
+    },
+    {
+      "path": "receipts",
+      "ticket": "T-08"
+    },
+    {
+      "path": "receipts/completions",
+      "ticket": "T-08"
+    },
+    {
+      "path": "receipts/import-receipts",
+      "ticket": "T-08"
+    },
+    {
+      "path": "receipts/operations",
+      "ticket": "T-08"
+    },
+    {
+      "path": "receipts/transactions",
+      "ticket": "T-08"
+    },
+    {
+      "path": "receipts/workflow-receipts",
+      "ticket": "T-08"
+    },
+    {
+      "path": "scripts",
+      "ticket": "T-09"
+    },
+    {
+      "path": "tests",
+      "ticket": "T-10"
+    }
+  ]
+}
